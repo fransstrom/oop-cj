@@ -42,6 +42,7 @@ int main() {
   std::vector<std::unique_ptr<Effect>> effects;
   effects.push_back(makeEffect(EffectType::Slow));
   effects.push_back(makeEffect(EffectType::Burn));
+  effects.push_back(makeEffect(EffectType::Heal));
 
   // Skapa en spelare
   Player player1(
@@ -81,7 +82,7 @@ int main() {
     if (choice == 1) {
       player2.takeDamage(10);
     } else if (choice == 2) {
-      EffectType type = static_cast<EffectType>((rand()%3)+1);
+      EffectType type = static_cast<EffectType>((rand()%effects.size())+1);
       auto effect = makeEffect(type);
       effect->apply(player2);
     }
