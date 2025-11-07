@@ -5,8 +5,8 @@ class Player
 {
 public:
 	Player(const std::string& n, int h, int s); // Konstruktor
-	Player(const std::string& n); // Överlagrad konstruktor, när vi bara vill ange namn för ny spelare
-	~Player() = default; // Standarddestruktor. Behövs bara om vi använder råa pekare i klassen, d.v.s. allokerar minne dynamiskt.
+	Player(const std::string& n); // ï¿½verlagrad konstruktor, nï¿½r vi bara vill ange namn fï¿½r ny spelare
+	~Player() = default; // Standarddestruktor. Behï¿½vs bara om vi anvï¿½nder rï¿½a pekare i klassen, d.v.s. allokerar minne dynamiskt.
 
 	const std::string& getName() const;
 	int getHealth() const;
@@ -15,6 +15,7 @@ public:
 	void takeDamage(int dmg);
 	void heal(int hp);
 	void changeSpeed(int delta);
+	void poison(int dmg);
 private:
 	std::string name;
 	int health;
