@@ -29,6 +29,8 @@ std::unique_ptr<Effect> makeEffect(EffectType type) {
     return std::make_unique<Slow>();
   case EffectType::Burn:
     return std::make_unique<Burn>();
+  case EffectType::Heal:
+    return std::make_unique<Heal>();
   default:
     return nullptr;
   }
@@ -79,7 +81,7 @@ int main() {
     if (choice == 1) {
       player2.takeDamage(10);
     } else if (choice == 2) {
-      EffectType type = static_cast<EffectType>((rand()%2)+1);
+      EffectType type = static_cast<EffectType>((rand()%3)+1);
       auto effect = makeEffect(type);
       effect->apply(player2);
     }

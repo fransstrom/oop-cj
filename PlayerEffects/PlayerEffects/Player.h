@@ -13,6 +13,7 @@ public:
 	int getSpeed() const;
 
 	void takeDamage(int dmg);
+	void heal(int hp);
 	void changeSpeed(int delta);
 private:
 	std::string name;
