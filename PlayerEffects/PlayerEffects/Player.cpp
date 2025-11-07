@@ -10,10 +10,10 @@ const std::string& Player::getName() const { return name; }
 int Player::getHealth() const { return health; }
 int Player::getSpeed() const { return speed; }
 
-void Player::heal(int hp){ 
-  health += hp;
-  std::cout << name << " healer for " << hp << " hitpoints" << ". Health is now at " << health << "\n";
-}
+//void Player::heal(int hp){ 
+//  health += hp;
+//  std::cout << name << " healer for " << hp << " hitpoints" << ". Health is now at " << health << "\n";
+//}
 
 void Player::takeDamage(int dmg) {
 	// Spelaren har en chans att undvika skadan helt, baserat på sin hastighet.

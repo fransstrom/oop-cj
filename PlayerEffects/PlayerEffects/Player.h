@@ -15,7 +15,6 @@ public:
 	void takeDamage(int dmg);
 	void heal(int hp);
 	void changeSpeed(int delta);
-	void heal(int hp);
 private:
 	std::string name;
 	int health;
