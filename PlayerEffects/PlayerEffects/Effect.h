@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <iostream>
 
-enum class EffectType { Slow = 1, Burn = 2, Heal = 3 Poison = 4};
+enum class EffectType { Slow = 1, Burn = 2, Heal = 3, Poison = 4 };
 
 struct Effect {
   virtual ~Effect() = default; // M�ste ha virtuell destruktor i bas-klasser.
@@ -30,11 +30,13 @@ struct Heal : Effect {
     std::cout << "Healing "<< player.getName() << "!\n";
     player.heal(4);
   }
+};
 
 struct Poison : Effect {
   void apply(Player &player) override{
     std::cout << "Poisoning " << player.getName() << "!\n";
-    player.poison(3)
+    for (int i = 0; i < 3; i++)
+    player.poison(3);
+    
   }
-}
 };

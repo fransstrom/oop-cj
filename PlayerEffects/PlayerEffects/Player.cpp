@@ -15,10 +15,25 @@ void Player::heal(int hp){
 std::cout << name << " healer for " << hp << " hitpoints" << "health is now " << health << "\n";
 }
 
-void Player::Poison(int dmg){
-	std::cout << name " gets poisoned for " dmg << "damage for 3 turns\n";
-		takeDamage(3);
+void Player::poison(int dmg){
+	isPoisoned = true;
+	poisonTurns = 3;
+	poisonDamage = dmg;
+	std::cout << name << " gets poisoned for " << dmg << "damage for 3 turns\n";
 }
+
+void Player::status(int dmg) {
+	if (isPoisoned) {
+	std::cout << name << " is poisoned and takes" << dmg << " untill the poison ends!\n";
+	takeDamage(poisonDamage);
+	poisonTurns--;
+
+	if (poisonTurns == 0) {
+		isPoisoned = false;
+		std::cout << name << " has been cured of poison!\n";
+		}
+	}
+ }
 
 void Player::takeDamage(int dmg) {
 	// Spelaren har en chans att undvika skadan helt, baserat p� sin hastighet.

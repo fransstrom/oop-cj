@@ -16,9 +16,17 @@ public:
 	void heal(int hp);
 	void changeSpeed(int delta);
 	void poison(int dmg);
+	void status(int dmg);
+	
+
 private:
 	std::string name;
 	int health;
 	int speed;
+
+	bool isPoisoned = false;
+	int poisonTurns = 0;
+	int poisonDamage = 0;
 };
+
 

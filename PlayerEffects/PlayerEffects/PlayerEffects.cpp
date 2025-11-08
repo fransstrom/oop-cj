@@ -3,26 +3,26 @@
 //
 
 #include <chrono>
-#include <cstdlib> // för rand()
+#include <cstdlib> // fï¿½r rand()
 #include <iostream>
-#include <memory> // för std::unique_ptr och std::make_unique
-#include <thread> // för sleep_for som låter oss pausa exekveringen
+#include <memory> // fï¿½r std::unique_ptr och std::make_unique
+#include <thread> // fï¿½r sleep_for som lï¿½ter oss pausa exekveringen
 #include <vector>
 
 #include "Effect.h"
 
-// RAII = Resource Acquisition Is Initialization. Innebär: Resurser (minne,
-// filer etc) kopplas till ett objekts livstid. När använda uniqe_ptr? Du vill
-// äga ett ett dynamiskt allokerat objekt Ingen annan ska dela på det ägarskapet
-// du vill att objektet automatiskt frigörs när det går ur scope
+// RAII = Resource Acquisition Is Initialization. Innebï¿½r: Resurser (minne,
+// filer etc) kopplas till ett objekts livstid. Nï¿½r anvï¿½nda uniqe_ptr? Du vill
+// ï¿½ga ett ett dynamiskt allokerat objekt Ingen annan ska dela pï¿½ det ï¿½garskapet
+// du vill att objektet automatiskt frigï¿½rs nï¿½r det gï¿½r ur scope
 
-// Device* d = new Device(); // Dynamisk allokering. Undvik detta om möjligt!
+// Device* d = new Device(); // Dynamisk allokering. Undvik detta om mï¿½jligt!
 // d->tick();
 // delete d;
 
-// Vi vill använda en "fabrik" för att skapa effekter baserat på en kod (1 =
-// Slow, 2 = Burn) Returnerar en unik pekare till en Effect. Använder unique_ptr
-// för att hantera minnet automatiskt.
+// Vi vill anvï¿½nda en "fabrik" fï¿½r att skapa effekter baserat pï¿½ en kod (1 =
+// Slow, 2 = Burn) Returnerar en unik pekare till en Effect. Anvï¿½nder unique_ptr
+// fï¿½r att hantera minnet automatiskt.
 std::unique_ptr<Effect> makeEffect(EffectType type) {
   switch (type) {
   case EffectType::Slow:
@@ -31,29 +31,33 @@ std::unique_ptr<Effect> makeEffect(EffectType type) {
     return std::make_unique<Burn>();
   case EffectType::Heal:
     return std::make_unique<Heal>();
+  case EffectType::Poison:
+    return std::make_unique<Poison>();
   default:
     return nullptr;
   }
 }
 
 int main() {
-  // Vårt huvudprogram:
-  // Vi börjar med att skapa och lagra några effekter i en vektor.
+  // Vï¿½rt huvudprogram:
+  // Vi bï¿½rjar med att skapa och lagra nï¿½gra effekter i en vektor.
   std::vector<std::unique_ptr<Effect>> effects;
   effects.push_back(makeEffect(EffectType::Slow));
   effects.push_back(makeEffect(EffectType::Burn));
+  effects.push_back(makeEffect(EffectType::Heal));
+  effects.push_back(makeEffect(EffectType::Poison));
 
   // Skapa en spelare
   Player player1(
-      "Mister Hero"); // Vanligt objekt på stacken. Player-objektet kommer att
-                      // förstöras automatiskt när det går ur scope, d.v.s. när
-                      // vi lämnar main-funktionen.
-  Player player2("Villain"); // Vanligt objekt på stacken. Player-objektet
-                             // kommer att förstöras automatiskt när det går ur
-                             // scope, d.v.s. när vi lämnar main-funktionen.
+      "Mister Hero"); // Vanligt objekt pï¿½ stacken. Player-objektet kommer att
+                      // fï¿½rstï¿½ras automatiskt nï¿½r det gï¿½r ur scope, d.v.s. nï¿½r
+                      // vi lï¿½mnar main-funktionen.
+  Player player2("Villain"); // Vanligt objekt pï¿½ stacken. Player-objektet
+                             // kommer att fï¿½rstï¿½ras automatiskt nï¿½r det gï¿½r ur
+                             // scope, d.v.s. nï¿½r vi lï¿½mnar main-funktionen.
 
-  // När vill vi använda smarta pekare?
-  // När vi vill lagra flera objekt i en container (vektor, lista etc)
+  // Nï¿½r vill vi anvï¿½nda smarta pekare?
+  // Nï¿½r vi vill lagra flera objekt i en container (vektor, lista etc)
   // auto playerPtr = std::make_unique<Player>("Mister Hero");
 
   std::cout << player1.getName() << " enters the chamber of doom with "
@@ -65,33 +69,34 @@ int main() {
             << "...\n";
   std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
-  // Applicera alla effekter på spelaren
+  // Applicera alla effekter pï¿½ spelaren
   for (const auto &effect : effects) {
     effect->apply(player1);
     effect->apply(player2);
   }
 
-  // Genererar random effekter och applicerar dem tills spelaren är död
+  // Genererar random effekter och applicerar dem tills spelaren ï¿½r dï¿½d
   std::cout << "\nApplying random effects until player is defeated:\n";
   while (player1.getHealth() > 0 && player2.getHealth() > 0) {
-    std::cout << player1.getName() << "s tur! Välj handling:\n";
+    std::cout << player1.getName() << "s tur! Vï¿½lj handling:\n";
     std::cout << "1. Attack\n2. Effekt (Slow/Burn)\n> ";
     int choice;
     std::cin >> choice;
     if (choice == 1) {
       player2.takeDamage(10);
     } else if (choice == 2) {
-      EffectType type = static_cast<EffectType>((rand()%3)+1);
+      EffectType type = static_cast<EffectType>((rand()%4)+1);
       auto effect = makeEffect(type);
       effect->apply(player2);
     }
     std::swap(player1, player2); // byt tur
   }
 
-  // När vi kommer hit, avslutas funktionen och vektorn går ur scope och alla
-  // unika pekare frigörs automatiskt.
+  // Nï¿½r vi kommer hit, avslutas funktionen och vektorn gï¿½r ur scope och alla
+  // unika pekare frigï¿½rs automatiskt.
   return 0;
 }
+
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
